@@ -1,0 +1,177 @@
+:root {
+  --bg: #090d18;
+  --panel: #0f162c;
+  --muted: #9aa3b5;
+  --accent: #f59e0b;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(180deg, #070b14, var(--bg));
+  color: #e5e7eb;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background: var(--panel);
+  border-radius: 18px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: #0a1122;
+  padding: 20px;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: #e5e7eb;
+  padding: 10px 0;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar a:hover {
+  color: var(--accent);
+}
+
+.sidebar.closed {
+  transform: translateX(-240px);
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #0a1122;
+  color: #e5e7eb;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.closed ~ .main-content {
+  margin-left: 0;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  background: #0a1122;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+}
+
+.kpi h3 {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.value {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 8px 0;
+  color: var(--accent);
+}
+
+.kpi a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.chart-card {
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.chart-card h2 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.info {
+  margin-bottom: 20px;
+}
+
+.info h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: #0a1122;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.company {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-240px);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
