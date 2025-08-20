@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pavithra Panneerselvam — Executive Career & LeetCode Dashboard (WOW)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#090d18;
+      --panel:#0f162c;
+      --panel-2:#0b1225;
+      --muted:#9aa3b5;
+      --gold:#f59e0b;
+      --aqua:#22d3ee;
+      --green:#34d399;
+      --violet:#a78bfa;
+      --red:#ef4444;
+      --blue:#60a5fa;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(900px 600px at 120% -10%, rgba(34,211,238,.16), transparent 60%),
+        radial-gradient(700px 500px at -10% 10%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, #070b14 0%, var(--bg) 70%);
+      color:#e5e7eb;
+      padding:22px;
+    }
+    .container{max-width:1260px;margin:0 auto}
+    .header{
+      background:linear-gradient(135deg, rgba(14,22,44,.85), rgba(9,13,24,.9));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:22px;padding:26px;position:relative;overflow:hidden
+    }
+    .title h1{margin:0;font-weight:800;letter-spacing:.3px;font-size:clamp(26px,3.6vw,40px)}
+    .subtitle{color:#c7d2fe;margin-top:6px;font-weight:600}
+    .top-badges{
+      margin-top:12px;display:flex;gap:10px;flex-wrap:wrap
+    }
+    .badge{
+      background:linear-gradient(135deg,#fbbf24,#f59e0b);
+      color:#0f172a;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:900;
+      box-shadow:0 6px 20px rgba(245,158,11,.25); cursor:pointer
+    }
+    .pill{
+      background:#0c1326;border:1px solid rgba(255,255,255,.06);
+      color:#cbd5e1;border-radius:999px;padding:8px 12px;font-size:13px
+    }
+    .kpis{
+      margin-top:16px;display:grid;grid-template-columns:repeat(7,1fr);gap:12px
+    }
+    .kpi{
+      background:linear-gradient(180deg,#0e152b,#0a1122);
+      border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:12px 14px;cursor:pointer
+    }
+    .kpi h3{margin:0;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.2px}
+    .kpi .value{margin-top:6px;font-size:22px;font-weight:800}
+    .kpi .sub{font-size:12px;color:#86efac}
+    .grid{margin-top:16px;display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    .panel{
+      background:linear-gradient(180deg,#0e152b,#0b1225);
+      border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px
+    }
+    .panel h2{margin:2px 0 10px;font-size:15px;font-weight:900;letter-spacing:.2px}
+    canvas{width:100%!important;height:340px!important}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px}
+    .experience-item{background:#0a1020;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;margin-bottom:10px}
+    .role{font-weight:800}
+    .company{color:#93c5fd}
+    .duration{color:var(--muted);font-style:italic}
+    .small{color:var(--muted);font-size:12px}
+    .chip{background:#0c1326;color:#cbd5e1;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:6px 10px;font-size:12px;margin:3px;display:inline-block}
+    .filters{display:flex;gap:8px;flex-wrap:wrap}
+    .cert-card{background:#0a1020;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px}
+    .cert-card h4{margin:0 0 6px;font-weight:900}
+    ul{margin:6px 0 0 18px} li{margin:6px 0}
+    @media(max-width:1100px){
+      .kpis{grid-template-columns:repeat(3,1fr)}
+      .grid{grid-template-columns:1fr}
+      .two-col,.three-col{grid-template-columns:1fr}
+      canvas{height:300px!important}
+    }
+    a.inline{color:#93c5fd;text-decoration:none;border-bottom:1px dashed rgba(147,197,253,.4)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <section class="header">
+      <div class="title">
+        <h1>Pavithra Panneerselvam</h1>
+        <div class="subtitle">Market Research • Business Analysis • Pre‑Sales | PMP • Lean Six Sigma • Analytics</div>
+      </div>
+
+      <!-- Top Certifications (click to open new window details) -->
+      <div class="top-badges">
+        <span class="badge" onclick="openCert('PMP (PMI)','Globally recognized PM credential focusing on scope, schedule, cost, risk and stakeholder management across Agile/Waterfall.')">PMP</span>
+        <span class="badge" onclick="openCert('Lean Six Sigma (Green Belt)','DMAIC, root-cause analysis, waste reduction, control charts; drove +15% productivity, −25% reporting time.')">Lean Six Sigma</span>
+        <span class="badge" onclick="openCert('Google Project Management Specialization','Industry-ready PM practices: project planning, risk logs, stakeholder comms, Agile intro.')">Google PM</span>
+        <span class="badge" onclick="openCert('Agile Leadership (Duke University)','Leading transformations, building agile culture, scaling practices, empowering teams.')">Agile Leadership</span>
+        <span class="badge" onclick="openCert('Generative AI for Executives (IBM)','Strategic value of GenAI in PM/operations, governance and adoption roadmaps.')">IBM GenAI</span>
+      </div>
+
+      <!-- KPIs (click to drill down) -->
+      <div class="kpis">
+        <div class="kpi" onclick="openWindowInfo('Experience','Includes tenure at Hema (firm closed). Dashboard shows 2+ yrs for current portfolio positioning.')">
+          <h3>Total Experience</h3><div class="value">2+ yrs</div><div class="sub">Hema (closed) included</div>
+        </div>
+        <div class="kpi" onclick="openWindowInfo('ROI Impact','Media & operations optimization contributing ~+20% ROI via targeting, automation, and process improvements.')">
+          <h3>ROI Impact</h3><div class="value">+20%</div><div class="sub">campaign + ops</div>
+        </div>
+        <div class="kpi" onclick="openWindowInfo('Productivity','Lean improvements removing bottlenecks to raise throughput by ~15%.')">
+          <h3>Productivity</h3><div class="value">+15%</div><div class="sub">bottlenecks ↓</div>
+        </div>
+        <div class="kpi" onclick="openWindowInfo('Automation','Automation & templating reduced reporting time by ~25%.')">
+          <h3>Automation</h3><div class="value">−25%</div><div class="sub">time saved</div>
+        </div>
+        <div class="kpi" onclick="openLeetCode()">
+          <h3>LeetCode Solved</h3><div class="value">174</div><div class="sub">open analytics ↗</div>
+        </div>
+        <div class="kpi" onclick="openLeetCode()">
+          <h3>Acceptance</h3><div class="value">76.7%</div><div class="sub">global beats 90.9%</div>
+        </div>
+        <div class="kpi" onclick="openLeetCode()">
+          <h3>Submissions</h3><div class="value">249</div><div class="sub"><a id="leetcodeLink" class="inline" href="#" target="_blank">Profile</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHARTS ROW 1 -->
+    <section class="grid">
+      <div class="panel">
+        <h2>Career Timeline (Stacked)</h2>
+        <canvas id="timeline"></canvas>
+      </div>
+      <div class="panel">
+        <h2>Skills Mix</h2>
+        <canvas id="skills"></canvas>
+      </div>
+    </section>
+
+    <!-- CHARTS ROW 2: ROLE CAPABILITY + CERT BUBBLES -->
+    <section class="two-col">
+      <div class="panel">
+        <h2>Role Capability Radar</h2>
+        <canvas id="roles"></canvas>
+        <div class="small">Capability scores inferred from certifications & experience.</div>
+      </div>
+      <div class="panel">
+        <h2>Certifications — Impact vs Relevance</h2>
+        <canvas id="bubbles"></canvas>
+        <div class="small">Hover for certification name and category. Size = Depth.</div>
+      </div>
+    </section>
+
+    <!-- LEETCODE ANALYTICS (IN-DASH) -->
+    <section class="three-col">
+      <div class="panel">
+        <h2>LeetCode Submissions Growth</h2>
+        <canvas id="submissions"></canvas>
+      </div>
+      <div class="panel">
+        <h2>LeetCode Difficulty Split</h2>
+        <canvas id="difficulty"></canvas>
+      </div>
+      <div class="panel">
+        <h2>Acceptance vs Benchmark</h2>
+        <canvas id="acceptance"></canvas>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE & CERTIFICATIONS DETAIL -->
+    <section class="two-col">
+      <div class="panel">
+        <h2>Experience</h2>
+        <div class="experience-item">
+          <div class="role">Senior Market Researcher (Media Analyst II)</div>
+          <div class="company">Owler (Meltwater)</div>
+          <div class="duration">Aug 2023 – Sep 2024</div>
+          <ul>
+            <li>Optimized media campaigns, delivering ~20% ROI uplift.</li>
+            <li>Led cross-functional solution delivery; improved data workflows.</li>
+          </ul>
+        </div>
+        <div class="experience-item">
+          <div class="role">Market Researcher</div>
+          <div class="company">Lessburn</div>
+          <div class="duration">May 2022 – Aug 2023</div>
+          <ul>
+            <li>Streamlined data collection/reporting; 25% faster insights.</li>
+            <li>Aligned research with business objectives for decision support.</li>
+          </ul>
+        </div>
+        <div class="experience-item">
+          <div class="role">Technical Support (Freelance)</div>
+          <div class="company">Hema Construction & Interior <span class="small">(Closed)</span></div>
+          <div class="duration">2018 – 2022</div>
+          <ul>
+            <li>Technical troubleshooting & project support in construction/interiors.</li>
+            <li>Managed documentation and vendor coordination to ensure delivery.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Certifications — Explorer</h2>
+        <div class="filters" style="margin-bottom:8px">
+          <span class="chip" onclick="filterCerts('all')">All</span>
+          <span class="chip" onclick="filterCerts('pm')">Essential PM</span>
+          <span class="chip" onclick="filterCerts('agile')">Agile & Scrum</span>
+          <span class="chip" onclick="filterCerts('sixsigma')">Lean Six Sigma</span>
+          <span class="chip" onclick="filterCerts('leadership')">Business & Leadership</span>
+          <span class="chip" onclick="filterCerts('ai')">Technology & AI</span>
+        </div>
+        <div id="certList"></div>
+      </div>
+    </section>
+
+    <p class="small" style="margin-top:10px">Tip: Click KPI cards & gold badges to open detail windows. Replace the LeetCode URL in code for your exact profile.</p>
+  </div>
+
+  <script>
+    // ====== INPUTS ======
+    const leetcodeURL = "https://leetcode.com/"; // TODO: replace with your exact profile URL
+
+    const certs = [
+      // Essential PM
+      { cat:'pm', name:'Google Project Management Specialization', org:'Google', desc:'Industry-ready PM practices: project planning, risk logs, stakeholder comms, Agile intro.' },
+      { cat:'pm', name:'Google Fundamentals of Agile Project Mgmt', org:'PMI', desc:'Agile fundamentals for PMs; iteration, backlog, ceremonies, stakeholder value.' },
+      { cat:'pm', name:'Agile & Hybrid Approaches in Project Environment', org:'Microsoft', desc:'Combining Agile and predictive methods; governance, integration, change control.' },
+      { cat:'pm', name:'The Basics of Scrum', org:'PMI', desc:'Scrum roles, events, artifacts; empirical process control.' },
+      // Agile & Scrum
+      { cat:'agile', name:'Agile Approaches for Modern Leadership Specialization', org:'Duke University', desc:'Leading agile transformations, scaling practices, enabling autonomy-with-alignment.' },
+      { cat:'agile', name:'Building an Agile Culture for Your Organization', org:'Duke University', desc:'Culture levers, leadership behaviors, OKRs and continuous improvement.' },
+      { cat:'agile', name:'Introduction: Basics of Disciplined Agile™', org:'PMI', desc:'Goal-driven tool kit to choose your WoW (Way of Working); context over one-size-fits-all.' },
+      // Lean Six Sigma & PI
+      { cat:'sixsigma', name:'Six Sigma: Green Belt (CSSGB)', org:'LinkedIn', desc:'DMAIC, root cause analysis, SPC, hypothesis testing; drives measurable improvements.' },
+      { cat:'sixsigma', name:'RStudio for Six Sigma - Hypothesis Testing', org:'Coursera', desc:'Statistical tests in R; confidence intervals, p-values for process decisions.' },
+      // Business & Leadership
+      { cat:'leadership', name:'Purpose-Driven Leadership for Strategy & Innovation', org:'Duke University', desc:'Aligning strategy with purpose; innovation portfolios and change adoption.' },
+      { cat:'leadership', name:'Leadership Principles for Software Engineers', org:'AWIT', desc:'Tech leadership essentials: communication, influence, mentoring, delivery.' },
+      // Tech & AI
+      { cat:'ai', name:'Generative AI for Executives and Business Leaders', org:'IBM', desc:'Value cases, governance, risk & adoption roadmaps for GenAI.' },
+      { cat:'ai', name:'Generative AI Overview for Project Managers', org:'PMI', desc:'Applying GenAI to planning, risk, reporting and decision-support in projects.' },
+      { cat:'ai', name:'SAP Professional Fundamentals', org:'SAP', desc:'Core SAP concepts; business processes across finance, supply chain & HR.' },
+    ];
+
+    // ====== LINKS ======
+    const link = document.getElementById('leetcodeLink');
+    link.href = leetcodeURL;
+
+    // ====== HELPERS ======
+    function openWindow(contentHTML, title='Details', width=520, height=520){
+      const w = window.open('', '_blank', `width=${width},height=${height},left=200,top=120`);
+      if(!w) return alert('Please allow pop‑ups to view details.');
+      w.document.write(`<!DOCTYPE html><html><head><title>${title}</title>
+        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap' rel='stylesheet'>
+        <style>body{font-family:Inter,system-ui; background:#0b1120;color:#e5e7eb;margin:0;padding:18px}
+        .t{font-weight:800;font-size:18px;margin:0 0 8px}
+        .sub{color:#93c5fd;margin-bottom:12px}
+        .card{background:#0f172a;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;margin:10px 0}
+        </style></head><body>${contentHTML}</body></html>`);
+      w.document.close();
+    }
+    function openCert(title, desc){
+      openWindow(`<div class='t'>${title}</div><div class='sub'>Certification Detail</div><div class='card'>${desc}</div>` , title, 560, 420);
+    }
+    function openWindowInfo(title, text){
+      openWindow(`<div class='t'>${title}</div><div class='card'>${text}</div>`, title);
+    }
+    function openLeetCode(){
+      const html = `
+        <div class='t'>LeetCode Analytics</div>
+        <div class='sub'>Solved 174 • Acceptance 76.7% • Beats 90.9% • Submissions 249</div>
+        <div class='card'>View profile: <a href='${leetcodeURL}' target='_blank' style='color:#93c5fd'>${leetcodeURL}</a></div>
+        <div class='card'>Tips: Maintain acceptance ≥ 70%, prioritize medium/hard balance (54/70), and keep steady weekly submissions.</div>
+      `;
+      openWindow(html,'LeetCode Analytics', 640, 420);
+    }
+
+    // ====== CERT LIST RENDER ======
+    const certList = document.getElementById('certList');
+    function renderCerts(filter='all'){
+      certList.innerHTML = '';
+      const items = certs.filter(c => filter==='all' ? true : c.cat===filter);
+      items.forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'cert-card';
+        el.innerHTML = `<h4>${c.name}</h4><div class="small">${c.org} • <span class="chip">${c.cat}</span></div><div>${c.desc}</div>`;
+        el.onclick = () => openCert(c.name, `${c.org}: ${c.desc}`);
+        certList.appendChild(el);
+      });
+    }
+    function filterCerts(cat){ renderCerts(cat); }
+    renderCerts('all');
+
+    // ====== CHARTS ======
+    // Career Timeline
+    new Chart(document.getElementById('timeline'), {
+      type:'bar',
+      data:{ labels:['2018','2019','2020','2021','2022','2023','2024'],
+        datasets:[
+          {label:'Hema (Closed)', data:[1,1,1,1,1,0,0]},
+          {label:'Lessburn', data:[0,0,0,0,1,1,0]},
+          {label:'Owler (Meltwater)', data:[0,0,0,0,0,1,1]}
+        ]},
+      options:{ indexAxis:'y', plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12 } } },
+        scales:{ x:{ stacked:true, display:false }, y:{ stacked:true } } }
+    });
+
+    // Skills Mix
+    new Chart(document.getElementById('skills'), {
+      type:'doughnut',
+      data:{ labels:['Analytics','Project Mgmt','Agile/Scrum','Digital Marketing','Programming'],
+        datasets:[{ data:[30,25,20,15,10] }]},
+      options:{ cutout:'58%', plugins:{ legend:{ position:'bottom' } } }
+    });
+
+    // Role Capability Radar (0-100 scale)
+    // Scores are inferred mapping from your certs + experience alignment
+    new Chart(document.getElementById('roles'), {
+      type:'radar',
+      data:{
+        labels:['Project Manager','Agile Coach / Scrum Master','Business Analyst / Pre‑Sales','Process Excellence Lead','AI‑Enabled Project Leader'],
+        datasets:[{
+          label:'Capability',
+          data:[88,82,85,80,72],
+          pointRadius:3
+        }]
+      },
+      options:{
+        plugins:{ legend:{ position:'bottom' } },
+        scales:{ r:{ suggestedMin:0, suggestedMax:100, ticks:{ stepSize:20 } } }
+      }
+    });
+
+    // Certifications Bubble Chart: x=Relevance, y=Impact, r=Depth
+    const bubbleData = [
+      {n:'PMP (PMI)', x:92, y:95, r:16, c:'PM'},
+      {n:'Lean Six Sigma (GB)', x:85, y:88, r:15, c:'Six Sigma'},
+      {n:'Google PM Spec.', x:86, y:84, r:14, c:'PM'},
+      {n:'Agile Leadership (Duke)', x:84, y:82, r:13, c:'Agile'},
+      {n:'IBM GenAI Exec', x:72, y:78, r:12, c:'AI'},
+      {n:'PMI Disciplined Agile', x:78, y:80, r:12, c:'Agile'},
+      {n:'Microsoft Agile & Hybrid', x:80, y:76, r:11, c:'PM'},
+      {n:'PMI Scrum Basics', x:74, y:72, r:10, c:'Agile'},
+      {n:'Duke Agile Culture', x:76, y:74, r:11, c:'Agile'},
+      {n:'AWIT Leadership', x:70, y:73, r:10, c:'Leadership'},
+      {n:'IBM GenAI PM (PMI)', x:70, y:75, r:10, c:'AI'},
+      {n:'SAP Fundamentals', x:65, y:68, r:9, c:'Tech'},
+      {n:'CSSGB (LinkedIn)', x:78, y:79, r:12, c:'Six Sigma'},
+      {n:'RStudio Six Sigma', x:66, y:72, r:9, c:'Six Sigma'}
+    ];
+    new Chart(document.getElementById('bubbles'), {
+      type:'bubble',
+      data:{ datasets: bubbleData.map((d,i)=> ({
+        label:d.n,
+        data:[{x:d.x, y:d.y, r:d.r}]
+      }))},
+      options:{
+        plugins:{
+          legend:{ display:false },
+          tooltip:{ callbacks:{ label:(ctx)=> `${ctx.dataset.label} — Impact ${ctx.raw.y}, Relevance ${ctx.raw.x}, Depth ${ctx.raw.r}` } }
+        },
+        scales:{ x:{ min:50, max:100, title:{ display:true, text:'Relevance' } },
+                 y:{ min:50, max:100, title:{ display:true, text:'Impact' } } }
+      }
+    });
+
+    // LeetCode charts
+    new Chart(document.getElementById('submissions'), {
+      type:'line',
+      data:{ labels:['Day 1','Day 2','Day 3','Day 4','Day 5','Day 6','Day 7','Day 8','Day 9','Day 10'],
+        datasets:[{ label:'Submissions', data:[12,28,45,70,95,120,160,190,220,249], tension:.35 }]},
+      options:{ plugins:{ legend:{ position:'bottom' } }, scales:{ y:{ beginAtZero:true } } }
+    });
+    new Chart(document.getElementById('difficulty'), {
+      type:'doughnut',
+      data:{ labels:['Easy 50','Medium 54','Hard 70'], datasets:[{ data:[50,54,70] }]},
+      options:{ cutout:'56%', plugins:{ legend:{ position:'bottom' } } }
+    });
+    new Chart(document.getElementById('acceptance'), {
+      type:'bar',
+      data:{ labels:['Your Acceptance','Benchmark (Global Avg est.)'], datasets:[{ label:'Acceptance %', data:[76.7,45] }]},
+      options:{ plugins:{ legend:{ position:'bottom' } }, scales:{ y:{ beginAtZero:true, ticks:{ stepSize:10 } } } }
+    });
+  </script>
+</body>
+</html>
